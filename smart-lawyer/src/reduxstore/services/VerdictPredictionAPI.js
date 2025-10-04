@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { PREDICTION_BASE } from "../../config/apiConfig";
 
 export const VerdictPredictionAPI = createApi({
   reducerPath: "verdictPredictionAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8013", // Backend URL for verdict prediction service
+  baseUrl: PREDICTION_BASE, // Gateway-relative prediction service
   }),
   tagTypes: ["VerdictPrediction"],
   endpoints: (builder) => ({

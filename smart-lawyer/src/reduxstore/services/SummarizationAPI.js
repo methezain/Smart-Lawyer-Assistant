@@ -1,10 +1,11 @@
 // services/SummarizationAPI.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SUMMARIZATION_BASE } from "../../config/apiConfig";
 
 export const SummarizationAPI = createApi({
   reducerPath: "summarizationApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8012",
+  baseUrl: SUMMARIZATION_BASE,
     prepareHeaders: (headers) => {
       headers.set("Accept", "application/json");
       return headers;

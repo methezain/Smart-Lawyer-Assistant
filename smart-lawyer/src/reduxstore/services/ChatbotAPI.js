@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { CHAT_BASE } from "../../config/apiConfig";
 
 export const ChatbotAPI = createApi({
   reducerPath: "chatbotAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8014/",
+  baseUrl: CHAT_BASE,
 
     prepareHeaders: (headers, { endpoint }) => {
       // Don't set Content-Type for file uploads - let browser handle it

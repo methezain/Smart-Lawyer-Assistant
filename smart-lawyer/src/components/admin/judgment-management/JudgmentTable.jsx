@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { API_BASE } from "../../../config/apiConfig";
 
 const JudgmentTable = ({
   judgments,
@@ -13,7 +14,7 @@ const JudgmentTable = ({
   currentPage,
   onPageChange,
 }) => {
-  const baseUrl = "http://localhost:8004/api/v1";
+  const baseUrl = API_BASE; // gateway-relative
 
   // Delete confirmation state
   const [deleteConfirmation, setDeleteConfirmation] = useState({

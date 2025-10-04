@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
+import { API_BASE } from "../../../config/apiConfig";
 import { useSelector } from "react-redux";
 import {
   useGetHearingAttachmentsQuery,
@@ -11,7 +12,7 @@ const Attachments = ({ hearing, onClose, onViewCase }) => {
   // no local list state; rely on API queries
   const hearingId = hearing?.id;
   const token = useSelector((s) => s?.auth?.token);
-  const API_BASE = "http://localhost:8002/api/v1"; // TODO: centralize in config if needed
+  // Gateway-relative base imported from config
 
   const { data: listData, refetch: refetchList } =
     useGetHearingAttachmentsQuery(hearingId, { skip: !hearingId });

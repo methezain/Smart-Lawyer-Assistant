@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
 // Permissions Service -> FastAPI at http://localhost:8010/api/v1
 export const PermissionsAPI = createApi({
   reducerPath: "PermissionsAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8010/api/v1",
+  baseUrl: API_BASE,
     prepareHeaders: (headers) => {
       headers.set("Content-Type", "application/json");
       return headers;

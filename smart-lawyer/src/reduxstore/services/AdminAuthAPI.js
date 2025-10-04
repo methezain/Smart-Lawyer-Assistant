@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
 const authHeader = () => {
   const token = localStorage.getItem("admin_token");
@@ -8,7 +9,7 @@ const authHeader = () => {
 export const AdminAuthAPI = createApi({
   reducerPath: "AdminAuthAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/", // Unified Auth service
+  baseUrl: API_BASE + "/", // Unified Auth service (ensure trailing slash for existing paths)
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("admin_token");
       if (token) headers.set("authorization", `Bearer ${token}`);

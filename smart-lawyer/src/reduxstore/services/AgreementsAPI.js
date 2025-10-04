@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
-export const AGREEMENTS_BASE_URL = "http://localhost:8007/api/v1";
+export const AGREEMENTS_BASE_URL = API_BASE;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: AGREEMENTS_BASE_URL,

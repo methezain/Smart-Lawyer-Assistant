@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
-const CLIENT_API_BASE_URL = "http://localhost:8000/api/v1";
+const CLIENT_API_BASE_URL = API_BASE;
 
 export const clientRegistrationAPI = createApi({
   reducerPath: "clientRegistrationAPI",

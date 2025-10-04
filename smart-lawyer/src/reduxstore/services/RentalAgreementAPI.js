@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { LEASE_AGREEMENTS_BASE } from "../../config/apiConfig";
 
-// Backend FastAPI service assumed running on this port (adjust if different)
-export const RENTAL_AGREEMENT_BASE_URL =
-  "http://localhost:8015/api/v1/lease_agreements"; // base now points to versioned lease agreements prefix
+export const RENTAL_AGREEMENT_BASE_URL = LEASE_AGREEMENTS_BASE; // gateway-relative
 
 const baseQuery = fetchBaseQuery({
   baseUrl: RENTAL_AGREEMENT_BASE_URL,

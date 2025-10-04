@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
 export const StaffAPI = createApi({
   reducerPath: "StaffAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8006/api/v1",
+  baseUrl: API_BASE,
     prepareHeaders: (headers, { getState }) => {
       // Try Redux state first
       const token = getState()?.auth?.token;

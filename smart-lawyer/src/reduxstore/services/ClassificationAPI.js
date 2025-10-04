@@ -1,11 +1,12 @@
 // services/ClassificationAPI.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { CLASSIFICATION_BASE } from "../../config/apiConfig";
 
 export const ClassificationAPI = createApi({
   reducerPath: "classificationApi",
   baseQuery: fetchBaseQuery({
     // Point to the new backend router prefix
-    baseUrl: "http://localhost:8011/api/classification",
+  baseUrl: CLASSIFICATION_BASE,
     prepareHeaders: (headers, { getState }) => {
       headers.set("Accept", "application/json");
       const token = getState()?.auth?.token;

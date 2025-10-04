@@ -9,8 +9,10 @@ import { logout } from "../features/authSlice";
 // Track user changes to clear caches
 let lastUserId = null;
 
+import { API_BASE } from "../../config/apiConfig";
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8002/api/v1",
+  baseUrl: API_BASE,
   prepareHeaders: (headers, { getState, endpoint, api }) => {
     // Try Redux store first
     const state = getState();

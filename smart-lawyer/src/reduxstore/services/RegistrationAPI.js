@@ -1,10 +1,11 @@
 // Admin Registration API - For Law Firm Registration
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../config/apiConfig";
 
 export const AdminRegistrationAPI = createApi({
   reducerPath: "AdminRegistrationAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: API_BASE + "/",
     prepareHeaders: (headers) => {
       // Set necessary headers for file uploads and CORS
       headers.set("Accept", "*/*");
