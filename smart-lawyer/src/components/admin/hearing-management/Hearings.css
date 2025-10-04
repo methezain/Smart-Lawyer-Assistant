@@ -1,0 +1,101 @@
+/* Notification animation */
+.notification-animation {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Calendar styles */
+.calendar-day {
+  min-height: 100px;
+  transition: background-color 0.2s;
+}
+
+.calendar-day:hover {
+  background-color: #f9fafb;
+}
+
+/* Pill indicators for number of hearings */
+.hearing-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #10b981;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Today indicator */
+.today-indicator {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Past day styling */
+.past-day {
+  color: #9ca3af;
+}
+
+/* Non-current month day styling */
+.non-month-day {
+  opacity: 0.4;
+}
+
+/* Calendar day hearing items */
+.calendar-day .text-xs {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+}
+
+/* Required document tags */
+.document-tag {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 64rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}

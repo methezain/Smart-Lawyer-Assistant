@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to SmartLawyer - Client Registration Confirmed</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f8f9fa;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0c0c0c 0%, #2d3748 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0c0c0c;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message {
+            font-size: 16px;
+            color: #666666;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .user-info h3 {
+            margin: 0 0 15px 0;
+            color: #0c0c0c;
+            font-size: 18px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            color: #6c757d;
+        }
+
+        .features-section {
+            margin: 30px 0;
+        }
+
+        .features-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0c0c0c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #0c0c0c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #0c0c0c 0%, #2d3748 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .next-steps {
+            background-color: #e8f4fd;
+            border-left: 4px solid #0c0c0c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .next-steps h4 {
+            margin: 0 0 15px 0;
+            color: #0c0c0c;
+            font-size: 16px;
+        }
+
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-links {
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            color: #0c0c0c;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 10px 0;
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #0c0c0c;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 0;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                padding: 15px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">SMARTLAWYER</div>
+            <p class="header-subtitle">Your Legal AI Assistant</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h1 class="welcome-title">Welcome to SmartLawyer! 🎉</h1>
+                <p class="welcome-message">
+                    Thank you for joining SmartLawyer as a client. Your account has been successfully created and you're now ready to access intelligent legal assistance whenever you need it.
+                </p>
+            </div>
+
+            <!-- User Information -->
+            <div class="user-info">
+                <h3>Your Account Details</h3>
+                <div class="info-row">
+                    <span class="info-label">Full Name:</span>
+                    <span class="info-value">{{full_name}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value">{{username}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{email}}</span>
+                </div>
+                {{#phone}}
+                <div class="info-row">
+                    <span class="info-label">Phone:</span>
+                    <span class="info-value">{{phone}}</span>
+                </div>
+                {{/phone}}
+                <div class="info-row">
+                    <span class="info-label">Registration Date:</span>
+                    <span class="info-value">{{registration_date}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Account Status:</span>
+                    <span class="info-value" style="color: #28a745; font-weight: bold;">✅ Active</span>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h2 class="features-title">What You Can Do Now</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-text">Connect with qualified lawyers</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🤖</div>
+                        <div class="feature-text">Access AI-powered legal advice</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📄</div>
+                        <div class="feature-text">Get document assistance</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚖️</div>
+                        <div class="feature-text">Receive case consultation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <a href="{{login_url}}" class="cta-button">Access Your Account</a>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h4>🚀 Next Steps:</h4>
+                <ul>
+                    <li>Complete your profile to get personalized legal recommendations</li>
+                    <li>Browse our network of verified lawyers by specialty</li>
+                    <li>Try our AI legal assistant for quick questions</li>
+                    <li>Set up your consultation preferences</li>
+                    <li>Enable notifications for case updates</li>
+                </ul>
+            </div>
+
+            <!-- Support Information -->
+            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <h4 style="margin: 0 0 10px 0; color: #856404;">📞 Need Help?</h4>
+                <p style="margin: 0; color: #856404; font-size: 14px;">
+                    Our support team is here to help you get started. Contact us at
+                    <a href="mailto:support@smartlawyer.ai" style="color: #856404; font-weight: bold;">support@smartlawyer.ai</a>
+                    or call us at <strong>+1 (555) 123-4567</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="{{app_url}}">Dashboard</a>
+                <a href="{{app_url}}/lawyers">Find Lawyers</a>
+                <a href="{{app_url}}/help">Help Center</a>
+                <a href="{{app_url}}/privacy">Privacy Policy</a>
+            </div>
+
+            <div class="social-links">
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="Twitter">🐦</a>
+                <a href="#" title="LinkedIn">💼</a>
+                <a href="#" title="Instagram">📷</a>
+            </div>
+
+            <p class="footer-text">
+                © 2025 SmartLawyer AI & its affiliates. All rights reserved.
+            </p>
+            <p class="footer-text">
+                This email was sent to {{email}}. If you no longer wish to receive emails from us,
+                <a href="{{unsubscribe_url}}" style="color: #6c757d;">unsubscribe here</a>.
+            </p>
+            <p class="footer-text">
+                SmartLawyer AI<br>
+                123 Legal Tech Avenue<br>
+                Innovation City, TC 12345
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

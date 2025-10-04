@@ -1,0 +1,10 @@
+/* Hide scrollbar but keep content scrollable */
+.scrollbar-hide {
+     -ms-overflow-style: none;
+     /* IE and Legacy Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+     width: 0;
+     height: 0;
+}

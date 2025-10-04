@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Status Update</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #04121b;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .content {
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #00a4b4;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 20px 0;
+      }
+      .approved {
+        color: #10b981;
+        font-weight: bold;
+      }
+      .rejected {
+        color: #ef4444;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>SmartLawyer.ai</h1>
+      </div>
+      <div class="content">
+        <h2>Registration Status Update</h2>
+        <p>Dear {{ first_name }} {{ last_name }},</p>
+        
+        {% if status == "approved" %}
+        <p>
+          We are pleased to inform you that your law firm "{{ firm_name }}" registration with
+          SmartLawyer.ai has been <span class="approved">APPROVED</span>.
+        </p>
+        <p>
+          Your firm profile is now visible on our platform, and you can start using all the
+          features of SmartLawyer.ai. You can log in to your account using the credentials
+          you provided during registration.
+        </p>
+        <p>
+          Here's what you can do now:
+        </p>
+        <ul>
+          <li>Manage your firm profile and services</li>
+          <li>Accept client inquiries and manage cases</li>
+          <li>Use all the professional tools available on our platform</li>
+          <li>Set up your availability and appointment preferences</li>
+        </ul>
+        <a href="https://smartlawyer.ai/login" class="button">Log In to Your Account</a>
+        {% else %}
+        <p>
+          Thank you for submitting your law firm "{{ firm_name }}" registration with
+          SmartLawyer.ai. After careful review, we regret to inform you that your registration
+          has been <span class="rejected">REJECTED</span> at this time.
+        </p>
+        <p>
+          This decision may be due to one or more of the following reasons:
+        </p>
+        <ul>
+          <li>Incomplete or incorrect documentation</li>
+          <li>Unable to verify the provided credentials</li>
+          <li>Missing or invalid Bar Council registration information</li>
+          <li>Non-compliance with our registration requirements</li>
+        </ul>
+        <p>
+          You may resubmit your registration with the correct information and documentation.
+          If you have any questions or need assistance with your application, please contact
+          our support team.
+        </p>
+        <a href="https://smartlawyer.ai/support" class="button">Contact Support</a>
+        {% endif %}
+        
+        <p>Thank you for choosing SmartLawyer.ai!</p>
+        <p>Best regards,<br />The SmartLawyer.ai Team</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2023 SmartLawyer.ai. All rights reserved.</p>
+        <p>This is an automated email. Please do not reply to this message.</p>
+      </div>
+    </div>
+  </body>
+</html> 

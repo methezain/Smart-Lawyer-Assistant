@@ -1,0 +1,107 @@
+/* Scoped styles for FullCalendar within the staff self Calendar component */
+
+/* Add padding around the day header area in month cells */
+.sl-calendar .fc-daygrid-day-top {
+     padding: 5px;
+}
+
+/* Increase tappable area for the date number and round it slightly */
+.sl-calendar .fc-daygrid-day-number {
+     display: inline-block;
+     padding: 2px 6px;
+     /* vertical, horizontal */
+     border-radius: 8px;
+     line-height: 1;
+     text-decoration: none;
+}
+
+/* Optional: nicer highlight for today without changing overall theme */
+.sl-calendar .fc-day-today .fc-daygrid-day-number {
+     background-color: #f0f9ff;
+     /* sky-50 */
+}
+
+/* Make each month cell look like a rounded card */
+/* Hide inner grid borders in the month body so rounded corners are visible */
+.sl-calendar .fc-daygrid-body td,
+.sl-calendar .fc-daygrid-body th {
+     border: 0;
+}
+
+/* The inner frame becomes the card */
+.sl-calendar .fc-daygrid-day-frame {
+     margin: 3.5px;
+     /* gap between cards */
+     border: 1px solid var(--fc-border-color, #e5e7eb);
+     border-radius: 12px;
+     overflow: hidden;
+     background: #ffffff;
+     transition: box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.sl-calendar .fc-daygrid-day-frame:hover {
+     cursor: pointer;
+     background-color: #fafafa;
+}
+
+/* Remove default today background from the table cell so it doesn't bleed into margins */
+.sl-calendar .fc-daygrid-day.fc-day-today {
+     background: transparent !important;
+}
+
+/* Today highlight applied to the rounded card only */
+.sl-calendar .fc-day-today .fc-daygrid-day-frame {
+     background-color: #e0f2fe;
+     /* sky-100 */
+}
+
+/* Selected day: emphasize with an inset ring to avoid layout shift */
+.sl-calendar .sl-selected-day .fc-daygrid-day-frame {
+     /* box-shadow: inset 0 0 0 2px #2563eb; */
+     border: 1px solid #7dd3fc;
+     box-shadow: inset 0 0 0 1px #7dd3fc;
+     /* sky-300 ring */
+}
+
+/* Week/Day view: apply light blue background to today's column only inside the frame */
+.sl-calendar .fc-timegrid-col.fc-day-today {
+     background: transparent !important;
+}
+
+.sl-calendar .fc-timegrid-col.fc-day-today .fc-timegrid-col-frame {
+     background-color: #bae6fd;
+     /* sky-200 */
+}
+
+/* Show pointer cursor when hovering time grid slots */
+.sl-calendar .fc-timegrid-slot:hover {
+     cursor: pointer;
+}
+
+/* Week/Day view: keep event content on one line and avoid awkward wrapping */
+.sl-calendar .fc-timegrid-event {
+     border-radius: 8px;
+     /* slightly rounded but not too pill-like to avoid clipping */
+     padding: 6px 0px;
+     /* tighter vertical padding helps in short slots */
+}
+
+.sl-calendar .fc-timegrid-event .fc-event-main {
+     display: flex;
+     align-items: center;
+     gap: 4px;
+     min-width: 0;
+     /* enable truncation */
+}
+
+.sl-calendar .fc-timegrid-event .fc-event-time {
+     white-space: nowrap;
+     font-weight: 600;
+}
+
+.sl-calendar .fc-timegrid-event .fc-event-title {
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     min-width: 0;
+}

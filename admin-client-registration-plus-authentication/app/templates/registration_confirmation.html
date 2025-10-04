@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #04121b;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .content {
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #00a4b4;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>SmartLawyer.ai</h1>
+      </div>
+      <div class="content">
+        <h2>Registration Confirmation</h2>
+        <p>Dear {{ first_name }} {{ last_name }},</p>
+        <p>
+          Thank you for registering your law firm "{{ firm_name }}" with
+          SmartLawyer.ai. Your registration is being processed.
+        </p>
+        <p>
+          Our team will review your submission and verify your credentials.
+          You'll receive another email once the verification process is
+          complete.
+        </p>
+        <p>In the meantime, here's what you need to know:</p>
+        <ul>
+          <li>The verification process typically takes 2-3 business days.</li>
+          <li>
+            Once approved, your law firm profile will be activated on our
+            platform.
+          </li>
+          <li>
+            You'll be able to access your dashboard using the credentials you
+            provided during registration.
+          </li>
+        </ul>
+        <p>
+          If you have any questions or need assistance, please don't hesitate to
+          contact our support team.
+        </p>
+        <a href="https://smartlawyer.ai/support" class="button"
+          >Contact Support</a
+        >
+        <p>Thank you for choosing SmartLawyer.ai!</p>
+        <p>Best regards,<br />The SmartLawyer.ai Team</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2023 SmartLawyer.ai. All rights reserved.</p>
+        <p>This is an automated email. Please do not reply to this message.</p>
+      </div>
+    </div>
+  </body>
+</html>

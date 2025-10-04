@@ -1,0 +1,309 @@
+services:
+  # Nginx API Gateway & Frontend
+  nginx-gateway:
+    build:
+      context: ./smart-lawyer
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"      # Default HTTP access
+      - "3000:80"    # Alternative port access
+    depends_on:
+      - admin-case-management
+      - admin-agreement-management
+      - admin-client-management
+      - admin-client-registration
+      - admin-document-management
+      - admin-hearing-management
+      - admin-invoice-management
+      - admin-judgment-management
+      - admin-permission-management
+      - admin-staff-management
+      - staff-ai-classification
+      - staff-ai-prediction
+      - staff-ai-summarization
+      - staff-ai-chatbot
+      - staff-ai-drafting
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Root-level .env removed. Each service must supply its own env vars
+    # via its own env_file or explicit environment: block.
+
+  # Core Admin Services
+  admin-case-management:
+    build:
+      context: ./admin-case-management-system
+      dockerfile: Dockerfile
+    container_name: admin-case-management
+    ports:
+      - "8001:8001"
+    environment:
+      - API_V1_STR=/api/v1
+      - PROJECT_NAME=Smart Lawyer - Case Management Service
+      - PROJECT_VERSION=1.0.0
+      - ALLOWED_ORIGINS=http://localhost
+    # Removed full code overlay to avoid masking image code.
+    # (If persistence needed, mount only a data directory.)
+    # volumes:
+    #   - case_data:/app/data
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # (Was using root .env) – removed. Ensure required shared vars are
+    # either duplicated here or passed in at deploy time.
+
+  admin-agreement-management:
+    build:
+      context: ./admin-agreement-management-system
+      dockerfile: Dockerfile
+    container_name: admin-agreement-management
+    ports:
+      - "8007:8007"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    # volumes:
+    #   - agreement_data:/app/data
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-client-management:
+    build:
+      context: ./admin-client-management-system
+      dockerfile: Dockerfile
+    container_name: admin-client-management
+    ports:
+      - "8005:8005"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    # volumes:
+    #   - client_data:/app/data
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-client-registration:
+    build:
+      context: ./admin-client-registration-plus-authentication
+      dockerfile: Dockerfile
+    container_name: admin-client-registration
+    ports:
+      - "8000:8000"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    # Removed full /app code overlay to ensure updated images run new code.
+    # Persist only uploads directory.
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-document-management:
+    build:
+      context: ./admin-documents-management-system
+      dockerfile: Dockerfile
+    container_name: admin-document-management
+    ports:
+      - "8004:8004"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    volumes:
+      - document_uploads:/app/uploads
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-hearing-management:
+    build:
+      context: ./admin-hearings-management-system
+      dockerfile: Dockerfile
+    container_name: admin-hearing-management
+    ports:
+      - "8002:8002"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    volumes:
+      - hearing_uploads:/app/uploads
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-invoice-management:
+    build:
+      context: ./admin-invoice-management-system
+      dockerfile: Dockerfile
+    container_name: admin-invoice-management
+    ports:
+      - "8008:8008"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    # volumes:
+    #   - invoice_data:/app/data
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-judgment-management:
+    build:
+      context: ./admin-judgement-management-system
+      dockerfile: Dockerfile
+    container_name: admin-judgment-management
+    ports:
+      - "8003:8003"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+      # GROQ_API_KEY now sourced from .env file (removed hard-coded secret)
+    # Removed full /app volume to avoid stale code masking image. Keep only uploads if required.
+    volumes:
+      - judgment_uploads:/app/uploads
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-permission-management:
+    build:
+      context: ./admin-permission-management-system
+      dockerfile: Dockerfile
+    container_name: admin-permission-management
+    ports:
+      - "8010:8010"
+    environment:
+      - API_V1_STR=/api/v1
+      - PROJECT_NAME=Smart Lawyer - Permission Management Service
+      - PROJECT_VERSION=1.0.0
+      - ALLOWED_ORIGINS=http://localhost
+    # volumes:
+    #   - permission_data:/app/data
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  admin-staff-management:
+    build:
+      context: ./admin-staff-management-system
+      dockerfile: Dockerfile
+    container_name: admin-staff-management
+    ports:
+      - "8006:8006"
+    environment:
+      - API_V1_STR=/api/v1
+      - ALLOWED_ORIGINS=http://localhost
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+    # Removed root .env reference.
+
+  # AI Services
+  staff-ai-classification:
+    build:
+      context: ./staff-ai-case-classification
+      dockerfile: Dockerfile
+    container_name: staff-ai-classification
+    ports:
+      - "8011:8011"
+    env_file:
+      - ./staff-ai-case-classification/.env  # Root .env removed
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+
+  staff-ai-prediction:
+    build:
+      context: ./staff-ai-case-perdiction
+      dockerfile: Dockerfile
+    container_name: staff-ai-prediction
+    ports:
+      - "8013:8013"
+    env_file:
+      - ./staff-ai-case-perdiction/.env  # Root .env removed
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+
+  staff-ai-summarization:
+    build:
+      context: ./staff-ai-case-summarization
+      dockerfile: Dockerfile
+    container_name: staff-ai-summarization
+    ports:
+      - "8012:8012"
+    env_file:
+      - ./staff-ai-case-summarization/.env  # Root .env removed
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+
+  staff-ai-chatbot:
+    build:
+      context: ./staff-ai-legal-chatbot
+      dockerfile: Dockerfile
+    container_name: staff-ai-chatbot
+    ports:
+      - "8014:8014"
+    env_file:
+      - ./staff-ai-legal-chatbot/.env  # Root .env removed
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+
+  staff-ai-drafting:
+    build:
+      context: ./staff-ai-docs-drafting
+      dockerfile: Dockerfile
+    container_name: staff-ai-drafting
+    ports:
+      - "8015:8015"
+    env_file:
+      - ./staff-ai-docs-drafting/.env  # Root .env removed
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - smart-lawyer-network
+    restart: unless-stopped
+
+# Persistent volumes for data
+volumes:
+  # Data-only volumes retained (uploads and specific persistence directories if re-added later)
+  uploads_data:
+  document_uploads:
+  hearing_uploads:
+  judgment_uploads:
+
+# Suggested (optional) resource limits example (uncomment to use with swarm or compose v3+)
+# x-default-deploy: &default-deploy
+#   deploy:
+#     resources:
+#       limits:
+#         cpus: '0.50'
+#         memory: 512M
+#       reservations:
+#         memory: 128M
+
+# Network for inter-service communication
+networks:
+  smart-lawyer-network:
+    driver: bridge
