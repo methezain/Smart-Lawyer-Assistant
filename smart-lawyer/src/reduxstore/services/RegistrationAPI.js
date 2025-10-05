@@ -28,19 +28,20 @@ export const AdminRegistrationAPI = createApi({
 
           // Copy all entries, properly handling arrays
           for (let pair of formData.entries()) {
-            const [key, value] = pair;
+            let [key, value] = pair;
 
-            // Add businessHours if it exists
-            if (key === "businessHours" && typeof value === "object") {
-              formDataCopy.append(key, JSON.stringify(value));
+            // Normalize businessHours -> officeHours BEFORE processing
+            if (key === "businessHours") {
+              key = "officeHours"; // backend expects officeHours
             }
-            // If this is an array field, ensure it's properly stringified
-            else if (
+
+            // If this is an array-like field, ensure it's properly stringified
+            if (
               key === "services" ||
               key === "specialty" ||
               key === "secondarySpecialties" ||
               key === "paymentMethods" ||
-              key === "businessHours"
+              key === "officeHours"
             ) {
               // If value is empty or null, use empty array
               if (!value || value === "null" || value === "undefined") {
@@ -72,8 +73,9 @@ export const AdminRegistrationAPI = createApi({
               else {
                 formDataCopy.append(key, value);
               }
+            } else if (key === "officeHours" && typeof value === "object") {
+              formDataCopy.append(key, JSON.stringify(value));
             } else {
-              // For other fields, just copy as is
               formDataCopy.append(key, value);
             }
           }
@@ -96,10 +98,11 @@ export const AdminRegistrationAPI = createApi({
         const newFormData = new FormData();
 
         // Add all fields to formData
-        Object.entries(formData).forEach(([key, value]) => {
+        Object.entries(formData).forEach(([origKey, value]) => {
+          let key = origKey === "businessHours" ? "officeHours" : origKey;
           if (value !== null && value !== undefined) {
             // Handle business hours
-            if (key === "businessHours") {
+            if (key === "officeHours" && (Array.isArray(value) || typeof value === 'object')) {
               newFormData.append(key, JSON.stringify(value));
             }
             // Handle array data (services, specialty, etc.)
@@ -150,7 +153,7 @@ export const AdminRegistrationAPI = createApi({
         });
 
         return {
-          url: "registration/complete/",
+          url: "registration/admin/complete/",
           method: "POST",
           body: newFormData,
           formData: true,

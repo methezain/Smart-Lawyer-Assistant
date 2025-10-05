@@ -26,7 +26,7 @@ const UserInfo = ({
     // Date validation - ensure it's in YYYY-MM-DD format
     if (formData.dateOfBirth) {
       // Convert date to YYYY-MM-DD format if it's not already
-      const dateObj = new Date(formData.DateOfBirth);
+      const dateObj = new Date(formData.dateOfBirth);
       if (!isNaN(dateObj.getTime())) {
         // Valid date, ensure correct format for API
         const year = dateObj.getFullYear();

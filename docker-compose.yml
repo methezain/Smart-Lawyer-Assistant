@@ -11,13 +11,13 @@ services:
       - admin-case-management
       - admin-agreement-management
       - admin-client-management
-      - admin-client-registration
+      - admin-client-registration 
       - admin-document-management
       - admin-hearing-management
       - admin-invoice-management
       - admin-judgment-management
       - admin-permission-management
-      - admin-staff-management
+      - admin-staff-management 
       - staff-ai-classification
       - staff-ai-prediction
       - staff-ai-summarization
@@ -92,7 +92,7 @@ services:
       dockerfile: Dockerfile
     container_name: admin-client-registration
     ports:
-      - "8000:8000"
+      - "8009:8009"
     environment:
       - API_V1_STR=/api/v1
       - ALLOWED_ORIGINS=http://localhost

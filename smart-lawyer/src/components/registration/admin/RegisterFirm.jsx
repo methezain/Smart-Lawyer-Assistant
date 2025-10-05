@@ -105,7 +105,7 @@ export default function RegisterFirm() {
     retainerFee: "",
     retainerCurrency: "PKR",
     retainerUnit: "monthly",
-    // Removed paymentMethods as it was removed from Pricing component
+    paymentMethods: [], // JSON array of accepted payment methods
 
     // Billing Info
     bankName: "",
@@ -270,114 +270,117 @@ export default function RegisterFirm() {
   // Handle final submission
   const handleFinalSubmission = async (verificationData) => {
     console.log("handleFinalSubmission called with:", verificationData);
+    console.log("Current formData:", formData);
     setIsSubmitting(true);
     try {
-      // Create a FormData object to handle file uploads
-      const formData = new FormData();
-
-      // Add all registration data
-      // 1. User Info
-      if (registrationData.userInfo) {
-        Object.entries(registrationData.userInfo).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            if (
-              key === "cnicFront" ||
-              key === "cnicBack" ||
-              key === "profileImage"
-            ) {
-              if (value instanceof File) {
-                formData.append(key, value);
-              }
-            } else {
-              formData.append(key, value);
-            }
-          }
-        });
+      // Final guard: pricing & consultation mutual-exclusivity before building FormData
+      const finalErrors = {};
+      const hasCaseFee = formData.caseFee && parseFloat(formData.caseFee) > 0;
+      const hasHourly = formData.hourlyRate && parseFloat(formData.hourlyRate) > 0;
+      if (!hasCaseFee && !hasHourly) {
+        finalErrors.pricing = "Provide either a case fee or an hourly rate";
       }
-
-      // 2. Firm Info
-      if (registrationData.firmInfo) {
-        Object.entries(registrationData.firmInfo).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            if (Array.isArray(value)) {
-              formData.append(key, JSON.stringify(value));
-            } else {
-              formData.append(key, value);
-            }
-          }
-        });
+      if (hasCaseFee && hasHourly) {
+        finalErrors.pricing = "Only one pricing model allowed (case OR hourly)";
       }
-
-      // 3. Contact Info
-      if (registrationData.contactInfo) {
-        Object.entries(registrationData.contactInfo).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            formData.append(key, value);
-          }
-        });
-      }
-
-      // 4. Office Hours - Handle new range-based system
-      if (formData.officeHours && Array.isArray(formData.officeHours)) {
-        formData.append("officeHours", JSON.stringify(formData.officeHours));
+      if (formData.freeConsultation) {
+        if (formData.consultationFee && formData.consultationFee.trim() !== "") {
+          finalErrors.consultationFee = "Remove consultation fee when free consultation is enabled";
+        }
       } else {
-        // Fallback to empty array if no office hours set
-        formData.append("officeHours", JSON.stringify([]));
+        if (!formData.consultationFee || formData.consultationFee.trim() === "") {
+          finalErrors.consultationFee = "Consultation fee required unless free consultation is enabled";
+        }
+      }
+      if (Object.keys(finalErrors).length) {
+        setFieldErrors((prev) => ({ ...prev, ...finalErrors }));
+        setIsSubmitting(false);
+        return; // Abort submit
       }
 
-      // 5. Credentials
-      if (registrationData.credentials) {
-        Object.entries(registrationData.credentials).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            formData.append(key, value);
-          }
-        });
-      }
+      // Create a FormData object to handle file uploads
+      const submitFormData = new FormData();
 
-      // 6. Pricing
-      if (registrationData.pricing) {
-        Object.entries(registrationData.pricing).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            if (Array.isArray(value)) {
-              formData.append(key, JSON.stringify(value));
-            } else {
-              formData.append(key, value);
+      // Normalize dateOfBirth to backend expected format YYYY-MM-DD if user entered DD/MM/YYYY or DD-MM-YYYY
+      const normalizedFormData = { ...formData };
+      if (normalizedFormData.dateOfBirth) {
+        const raw = normalizedFormData.dateOfBirth.trim();
+        // Accept separators '/' or '-'
+        const sep = raw.includes('/') ? '/' : (raw.includes('-') ? '-' : null);
+        if (sep) {
+            const parts = raw.split(sep);
+            // If user entered DD-MM-YYYY or DD/MM/YYYY (length 3 and first part length <=2)
+            if (parts.length === 3) {
+              const [p1, p2, p3] = parts;
+              // Heuristic: if last segment has 4 chars assume it's YYYY
+              if (p3.length === 4 && p1.length <= 2 && p2.length <= 2) {
+                // Convert to YYYY-MM-DD ensuring zero padding
+                const dd = p1.padStart(2, '0');
+                const mm = p2.padStart(2, '0');
+                normalizedFormData.dateOfBirth = `${p3}-${mm}-${dd}`;
+              }
             }
-          }
-        });
+        }
+        // If already in YYYY-MM-DD leave as-is
       }
 
-      // 7. Billing Info
-      if (registrationData.billingInfo) {
-        Object.entries(registrationData.billingInfo).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            formData.append(key, value);
+      // Add all form data directly from the formData state
+      Object.entries(normalizedFormData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          // Handle file uploads
+          if (
+            (key === "cnicFront" ||
+            key === "cnicBack" ||
+            key === "profileImage" ||
+            key === "bannerImage") &&
+            value instanceof File
+          ) {
+            submitFormData.append(key, value);
           }
-        });
-      }
+          // Handle array fields that need JSON stringification
+          else if (Array.isArray(value)) {
+            submitFormData.append(key, JSON.stringify(value));
+          }
+          // Handle regular fields
+          else {
+            submitFormData.append(key, value);
+          }
+        }
+      });
 
-      // 8. Verification Data
+      // Add verification data from the final step
       if (verificationData) {
         console.log("Adding verification data to FormData:", verificationData);
         Object.entries(verificationData).forEach(([key, value]) => {
           if (value !== null && value !== undefined) {
             if (key.includes("documentFile_") && value instanceof File) {
-              formData.append(key, value);
+              submitFormData.append(key, value);
             } else {
-              formData.append(key, value);
+              submitFormData.append(key, value);
             }
           }
         });
       }
 
+      // Ensure required fields have default values
+      if (!submitFormData.has("advisory")) {
+        submitFormData.append("advisory", JSON.stringify([]));
+      }
+      if (!submitFormData.has("officeHours")) {
+        submitFormData.append("officeHours", JSON.stringify([]));
+      }
+      if (!submitFormData.has("paymentMethods")) {
+        submitFormData.append("paymentMethods", JSON.stringify([]));
+      }
+
       // Log the FormData contents for debugging
       console.log("FormData contents:");
-      for (let pair of formData.entries()) {
+      for (let pair of submitFormData.entries()) {
         console.log(pair[0] + ": " + pair[1]);
       }
 
       // Submit all data at once
-      const response = await completeRegistration(formData).unwrap();
+      const response = await completeRegistration(submitFormData).unwrap();
       console.log("API Response:", response);
 
       // Set verification as complete

@@ -19,4 +19,18 @@ app.include_router(invoices.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
-    return {"status": "ok", "service": "invoices"}
+    return {
+        "message": "Invoice Management Service",
+        "version": "1.0.0",
+        "docs": "/docs"
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=8008,
+        reload=False,
+        log_level="info"
+    )
