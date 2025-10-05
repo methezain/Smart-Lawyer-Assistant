@@ -291,8 +291,41 @@ async def complete_registration(
                 )
             )
         
+        # Validate date of birth format (accept YYYY-MM-DD, DD-MM-YYYY, DD/MM/YYYY)
+        parsed_dob = None
+        dob_formats = ["%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y"]
+        for fmt in dob_formats:
+            if parsed_dob is not None:
+                break
+            try:
+                parsed_dob = datetime.strptime(dateOfBirth, fmt)
+            except ValueError:
+                continue
+        if not parsed_dob:
+            validation_errors.append(
+                ErrorDetail(
+                    code="VALIDATION_ERROR",
+                    field="dateOfBirth",
+                    message="Date of birth must be in one of: YYYY-MM-DD, DD-MM-YYYY, DD/MM/YYYY"
+                )
+            )
+        else:
+            # Normalize to ISO YYYY-MM-DD for storage
+            dateOfBirth = parsed_dob.strftime("%Y-%m-%d")
+        
         # Return validation errors if any
         if validation_errors:
+            logger.warning(
+                "Registration validation failed: %s",
+                [
+                    {
+                        "field": v.field,
+                        "code": v.code,
+                        "message": v.message,
+                    }
+                    for v in validation_errors
+                ],
+            )
             return create_error_response(
                 message="Validation failed",
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -340,6 +373,15 @@ async def complete_registration(
                 error_code="DUPLICATE_USERNAME",
                 field="username"
             )
+
+        # Log key pricing / consultation inputs for debugging prior to DB writes
+        logger.info(
+            "Pricing debug -> caseFee=%s hourlyRate=%s freeConsultation=%s consultationFee=%s",
+            caseFee,
+            hourlyRate,
+            freeConsultation,
+            consultationFee,
+        )
         
         # Process file uploads
         cnic_front_path = await save_upload_file(cnicFront, "cnic") if cnicFront else None

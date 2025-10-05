@@ -1,4 +1,5 @@
 import os
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -15,6 +16,15 @@ from app.models.client_database import create_client_db_and_tables
 from app.schemas.registration import StandardResponse, ErrorDetail, ResponseStatus
 from app.utils.json_encoder import CustomJSONEncoder
 
+# Lifespan event handler
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    create_db_and_tables()
+    create_client_db_and_tables()
+    yield
+    # Shutdown (if needed)
+
 # Custom FastAPI class with a custom JSON encoder
 class CustomFastAPI(FastAPI):
     def __init__(self, *args, **kwargs):
@@ -24,7 +34,8 @@ class CustomFastAPI(FastAPI):
 app = CustomFastAPI(
     title="SmartLawyer API",
     description="API for SmartLawyer Law Firm Registration",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # CORS Middleware
@@ -97,11 +108,7 @@ app.include_router(auth.router, prefix="/api/v1", tags=["Unified Authentication"
 app.include_router(client_registration.router, prefix="/api/v1", tags=["Client Registration"])
 app.include_router(login_activity.router, prefix="/api/v1", tags=["Login Activity"])
 
-# On startup we create tables and run light migrations (SQLite):
-@app.on_event("startup")
-async def startup_event():
-    create_db_and_tables()
-    create_client_db_and_tables()
+# Database tables are now created via lifespan event handler
 
 @app.get("/")
 async def root():

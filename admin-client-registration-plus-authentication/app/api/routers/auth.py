@@ -391,7 +391,10 @@ async def list_firms(admin_session: Session = Depends(get_session)):
 
 async def _staff_login(username: str, password: str, firm_id: int, request: Request, admin_session: Session):
     """Delegate staff credential verification to staff-registration service, then issue JWT."""
-    staff_service_url = os.getenv("STAFF_SERVICE_URL", "http://localhost:8006/api/v1")
+    # Use Docker service DNS name by default so inter-container calls succeed.
+    # Allow override via STAFF_SERVICE_URL for flexibility in other environments.
+    staff_service_url = os.getenv("STAFF_SERVICE_URL", "http://admin-staff-management:8006/api/v1")
+    logger.debug(f"Staff service base URL resolved to: {staff_service_url}")
 
     # Call staff verify endpoint
     async with httpx.AsyncClient(timeout=10.0) as client:

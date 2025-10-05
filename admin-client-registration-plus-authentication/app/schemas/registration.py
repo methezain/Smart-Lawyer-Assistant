@@ -54,7 +54,7 @@ class RegistrationRequest(BaseModel):
     retainerFee: Optional[str] = None
     retainerCurrency: str = "PKR"
     retainerUnit: str = "monthly"
-    paymentMethods: List[str]
+    paymentMethods: Optional[List[str]] = []
     
     # Billing Information
     bankName: str
@@ -77,6 +77,16 @@ class RegistrationRequest(BaseModel):
     affiliation: str
     termsAccepted: bool = False
     
+    @validator('dateOfBirth')
+    def validate_date_of_birth(cls, v):
+        if not v:
+            raise ValueError('Date of birth is required')
+        try:
+            datetime.strptime(v, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError('Date of birth must be in YYYY-MM-DD format')
+        return v
+    
     @validator('termsAccepted')
     def terms_must_be_accepted(cls, v):
         if not v:
@@ -94,19 +104,25 @@ class RegistrationRequest(BaseModel):
         case_fee = values.get('caseFee')
         hourly_rate = values.get('hourlyRate')
         
+        # Check if values are meaningful (not None or empty string)
+        has_case_fee = case_fee is not None and case_fee != '' and str(case_fee).strip() != ''
+        has_hourly_rate = hourly_rate is not None and hourly_rate != '' and str(hourly_rate).strip() != ''
+        
         # Either case fee OR hourly rate must be provided, but not both
-        if not case_fee and not hourly_rate:
+        if not has_case_fee and not has_hourly_rate:
             raise ValueError('Either case fee or hourly rate must be provided')
-        if case_fee and hourly_rate:
+        if has_case_fee and has_hourly_rate:
             raise ValueError('Please provide either case fee or hourly rate, not both')
         return v
     
     @validator('consultationFee')
     def validate_consultation_fee(cls, v, values):
         free_consultation = values.get('freeConsultation', False)
-        if not free_consultation and not v:
+        has_consultation_fee = v is not None and v != '' and str(v).strip() != ''
+        
+        if not free_consultation and not has_consultation_fee:
             raise ValueError('Consultation fee is required when not offering free consultation')
-        if free_consultation and v:
+        if free_consultation and has_consultation_fee:
             raise ValueError('Consultation fee should not be provided when offering free consultation')
         return v
 
